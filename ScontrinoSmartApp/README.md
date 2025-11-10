@@ -1,3 +1,0 @@
-# Reciept-Analizar
-#test
-
