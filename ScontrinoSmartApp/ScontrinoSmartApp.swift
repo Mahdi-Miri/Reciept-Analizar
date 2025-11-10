@@ -1,6 +1,6 @@
 //
 //  ScontrinoSmartApp.swift
-//  
+//
 //
 //  Created by Mahdi Miri on 10/11/25.
 //
