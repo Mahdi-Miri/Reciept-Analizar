@@ -54,3 +54,35 @@ final class ReceiptItem {
         self.price = price
     }
 }
+// --- Budget Data Model ---
+// Add this class to your DataModels.swift file
+
+@Model
+final class Budget {
+    
+    // The category this budget applies to (e.g., "Groceries")
+    var category: String
+    
+    // The total amount for this budget
+    var amount: Double
+    
+    // The month and year this budget is for
+    var month: Int // 1-12
+    var year: Int
+    
+    // A unique ID to prevent duplicate budgets
+    // e.g., "Groceries-2025-11"
+    @Attribute(.unique) var id: String
+    
+    init(category: String, amount: Double, date: Date) {
+        self.category = category
+        self.amount = amount
+        
+        let calendar = Calendar.current
+        self.month = calendar.component(.month, from: date)
+        self.year = calendar.component(.year, from: date)
+        
+        // Create the unique ID
+        self.id = "\(category)-\(self.year)-\(self.month)"
+    }
+}
