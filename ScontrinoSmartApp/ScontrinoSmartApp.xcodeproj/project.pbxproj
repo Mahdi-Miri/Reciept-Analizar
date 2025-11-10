@@ -7,19 +7,32 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		8B2969512EC1FC6D002DE827 /* ScontrinoSmartApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScontrinoSmartApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B2969682EC1FD66002DE827 /* ScontrinoSmartApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScontrinoSmartApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8B2969752EC1FD67002DE827 /* Exceptions for "ScontrinoSmartApp" folder in "ScontrinoSmartApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8B2969672EC1FD66002DE827 /* ScontrinoSmartApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8B2969532EC1FC6D002DE827 /* ScontrinoSmartApp */ = {
+		8B29696A2EC1FD66002DE827 /* ScontrinoSmartApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8B2969752EC1FD67002DE827 /* Exceptions for "ScontrinoSmartApp" folder in "ScontrinoSmartApp" target */,
+			);
 			path = ScontrinoSmartApp;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8B29694E2EC1FC6D002DE827 /* Frameworks */ = {
+		8B2969652EC1FD66002DE827 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,18 +42,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8B2969482EC1FC6D002DE827 = {
+		8B29695F2EC1FD66002DE827 = {
 			isa = PBXGroup;
 			children = (
-				8B2969532EC1FC6D002DE827 /* ScontrinoSmartApp */,
-				8B2969522EC1FC6D002DE827 /* Products */,
+				8B29696A2EC1FD66002DE827 /* ScontrinoSmartApp */,
+				8B2969692EC1FD66002DE827 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		8B2969522EC1FC6D002DE827 /* Products */ = {
+		8B2969692EC1FD66002DE827 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B2969512EC1FC6D002DE827 /* ScontrinoSmartApp.app */,
+				8B2969682EC1FD66002DE827 /* ScontrinoSmartApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,64 +61,64 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8B2969502EC1FC6D002DE827 /* ScontrinoSmartApp */ = {
+		8B2969672EC1FD66002DE827 /* ScontrinoSmartApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B29695C2EC1FC6E002DE827 /* Build configuration list for PBXNativeTarget "ScontrinoSmartApp" */;
+			buildConfigurationList = 8B2969762EC1FD67002DE827 /* Build configuration list for PBXNativeTarget "ScontrinoSmartApp" */;
 			buildPhases = (
-				8B29694D2EC1FC6D002DE827 /* Sources */,
-				8B29694E2EC1FC6D002DE827 /* Frameworks */,
-				8B29694F2EC1FC6D002DE827 /* Resources */,
+				8B2969642EC1FD66002DE827 /* Sources */,
+				8B2969652EC1FD66002DE827 /* Frameworks */,
+				8B2969662EC1FD66002DE827 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				8B2969532EC1FC6D002DE827 /* ScontrinoSmartApp */,
+				8B29696A2EC1FD66002DE827 /* ScontrinoSmartApp */,
 			);
 			name = ScontrinoSmartApp;
 			packageProductDependencies = (
 			);
 			productName = ScontrinoSmartApp;
-			productReference = 8B2969512EC1FC6D002DE827 /* ScontrinoSmartApp.app */;
+			productReference = 8B2969682EC1FD66002DE827 /* ScontrinoSmartApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		8B2969492EC1FC6D002DE827 /* Project object */ = {
+		8B2969602EC1FD66002DE827 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					8B2969502EC1FC6D002DE827 = {
+					8B2969672EC1FD66002DE827 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
-			buildConfigurationList = 8B29694C2EC1FC6D002DE827 /* Build configuration list for PBXProject "ScontrinoSmartApp" */;
+			buildConfigurationList = 8B2969632EC1FD66002DE827 /* Build configuration list for PBXProject "ScontrinoSmartApp" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 8B2969482EC1FC6D002DE827;
+			mainGroup = 8B29695F2EC1FD66002DE827;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 8B2969522EC1FC6D002DE827 /* Products */;
+			productRefGroup = 8B2969692EC1FD66002DE827 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8B2969502EC1FC6D002DE827 /* ScontrinoSmartApp */,
+				8B2969672EC1FD66002DE827 /* ScontrinoSmartApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8B29694F2EC1FC6D002DE827 /* Resources */ = {
+		8B2969662EC1FD66002DE827 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -115,7 +128,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8B29694D2EC1FC6D002DE827 /* Sources */ = {
+		8B2969642EC1FD66002DE827 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -125,7 +138,75 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		8B29695A2EC1FC6E002DE827 /* Debug */ = {
+		8B2969772EC1FD67002DE827 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScontrinoSmartApp/ScontrinoSmartApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MR6J26BKS3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScontrinoSmartApp/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mahdimiri.ScontrinoSmartApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8B2969782EC1FD67002DE827 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScontrinoSmartApp/ScontrinoSmartApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MR6J26BKS3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScontrinoSmartApp/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mahdimiri.ScontrinoSmartApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8B2969792EC1FD67002DE827 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -189,7 +270,7 @@
 			};
 			name = Debug;
 		};
-		8B29695B2EC1FC6E002DE827 /* Release */ = {
+		8B29697A2EC1FD67002DE827 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -246,92 +327,28 @@
 			};
 			name = Release;
 		};
-		8B29695D2EC1FC6E002DE827 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MR6J26BKS3;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mahdimiri.ScontrinoSmartApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		8B29695E2EC1FC6E002DE827 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MR6J26BKS3;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mahdimiri.ScontrinoSmartApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B29694C2EC1FC6D002DE827 /* Build configuration list for PBXProject "ScontrinoSmartApp" */ = {
+		8B2969632EC1FD66002DE827 /* Build configuration list for PBXProject "ScontrinoSmartApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8B29695A2EC1FC6E002DE827 /* Debug */,
-				8B29695B2EC1FC6E002DE827 /* Release */,
+				8B2969792EC1FD67002DE827 /* Debug */,
+				8B29697A2EC1FD67002DE827 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B29695C2EC1FC6E002DE827 /* Build configuration list for PBXNativeTarget "ScontrinoSmartApp" */ = {
+		8B2969762EC1FD67002DE827 /* Build configuration list for PBXNativeTarget "ScontrinoSmartApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8B29695D2EC1FC6E002DE827 /* Debug */,
-				8B29695E2EC1FC6E002DE827 /* Release */,
+				8B2969772EC1FD67002DE827 /* Debug */,
+				8B2969782EC1FD67002DE827 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 8B2969492EC1FC6D002DE827 /* Project object */;
+	rootObject = 8B2969602EC1FD66002DE827 /* Project object */;
 }
