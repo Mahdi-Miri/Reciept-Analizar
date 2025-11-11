@@ -1,0 +1,41 @@
+{
+  "activityEntities" : [
+    "dataSourceMetrics",
+    [
+      {
+        "createdDate" : "2025-11-11T10:05:15Z",
+        "event" : "dataSourceMetrics",
+        "id" : "D4425832-801E-4923-99FA-57B9C07C09EA",
+        "subtitle" : "3 Classes, 99 Items",
+        "title" : "Data Summary"
+      }
+    ],
+    "dataSourceTrainingStarted",
+    [
+      {
+        "createdDate" : "2025-11-11T10:05:15Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "B9494E31-5625-4AC1-9279-ADE9B1CE291F",
+        "subtitle" : "ItemTagger 1",
+        "title" : "Used By"
+      }
+    ]
+  ],
+  "createdDate" : "2025-11-11T10:04:37Z",
+  "dataPathRelativeToProjectURL" : "../../../../../Desktop/ner_dataset.json/",
+  "dataResult" : {
+    "createdDate" : "2025-11-11T10:04:37Z",
+    "dataSourceID" : "E685008F-C296-4F65-B44D-71EBEF373E96",
+    "dataURL" : "file:///Users/mahdimiri/Desktop/ner_dataset.json"
+  },
+  "dataURL" : "file:///Users/mahdimiri/Desktop/ner_dataset.json",
+  "experimentIDs" : [
+    "0E68C999-28A8-4855-A28D-FBAF2C525ED5"
+  ],
+  "id" : "E685008F-C296-4F65-B44D-71EBEF373E96",
+  "modifiedDate" : "2025-11-11T10:05:15Z",
+  "pathType" : 0,
+  "preferredFilename" : "ner_dataset.json",
+  "title" : "ner_dataset.json",
+  "version" : "1.0"
+}

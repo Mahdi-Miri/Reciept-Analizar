@@ -1,0 +1,29 @@
+{
+  "activityEntities" : [
+    "projectCreated",
+    [
+      {
+        "createdDate" : "2025-11-11T10:02:44Z",
+        "event" : "projectCreated",
+        "id" : "F55CAE7D-3FC4-419E-9A22-E09F9EDEC06E",
+        "subtitle" : "ItemTagger",
+        "title" : "Project Created"
+      }
+    ]
+  ],
+  "authorName" : "Mahdi Miri",
+  "createdDate" : "2025-11-11T10:02:44Z",
+  "description" : "",
+  "id" : "6D64A5C6-D288-4DDA-9F81-F7676AA332A3",
+  "license" : "",
+  "location" : "",
+  "modifiedDate" : "2025-11-11T10:02:44Z",
+  "projectName" : "ItemTagger",
+  "settingsEntity" : {
+    "snapshotOnExtendTraining" : true,
+    "snapshotOnResumeTraining" : false
+  },
+  "taskType" : "wordTagger",
+  "title" : "Word Tagging",
+  "version" : "1.1"
+}
