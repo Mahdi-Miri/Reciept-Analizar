@@ -62,7 +62,6 @@ class ReceiptExtractor {
         var foundItems: [ReceiptItem] = []
         
         // 1. Get the list of labels the model knows (e.g., "PRODUCT_NAME", "QUANTITY")
-        let labels = nerModel.labels
         
         // 2. Process each line of the receipt
         for line in lines {
