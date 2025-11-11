@@ -207,8 +207,8 @@ struct DashboardView: View {
     @MainActor
     // FILE: DashboardView.swift (Updated function)
 
-        @MainActor
-        private func saveReceipt(storeName: String, total: Double?, date: Date?, rawText: String, category: String, items: [ReceiptItem]) { // <-- ADDED ITEMS
+    
+    private func saveReceipt(storeName: String, total: Double?, date: Date?, rawText: String, category:String, items: [ReceiptItem]){ // <-- ADDED ITEMS
             let finalTotal = total ?? 0.0
             let finalDate = date ?? Date()
             
