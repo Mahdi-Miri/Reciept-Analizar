@@ -5,22 +5,17 @@
 //  Created by Mahdi Miri on 10/11/25.
 //
 
-// FILE: ReceiptExtractor.swift (REPLACE THE ENTIRE FILE)
-
-// FILE: ReceiptExtractor.swift (REPLACED)
 
 import Foundation
 import CoreML
-import NaturalLanguage // We need this for NER
+import NaturalLanguage
 
 class ReceiptExtractor {
     
-    // --- NEW: Load the NER (Word Tagger) model ---
     private let nerModel: NLModel?
     
     init() {
         // Try to load our custom Word Tagger model
-        // Make sure you've trained and added "ItemTagger.mlmodel"
         do {
             let compiledModelURL = Bundle.main.url(forResource: "ItemTagger", withExtension: "mlmodelc")
             
@@ -41,75 +36,59 @@ class ReceiptExtractor {
         
         let lines = rawText.split(separator: "\n").map { String($0) }
         
-        // Use Regex for these, as they are still reliable
+        // --- Use the new, smarter functions ---
         let storeName = findStoreName(from: lines)
         let total = findTotalAmount(from: rawText)
         let date = findTransactionDate(from: rawText)
         
-        // --- NEW: Use NER to find items ---
         let items = findItems(from: lines)
         
         return (storeName, total, date, items)
     }
     
-    // --- NEW: findItems using the NER Model ---
+    // --- (findItems function remains the same) ---
     private func findItems(from lines: [String]) -> [ReceiptItem] {
         guard let nerModel = self.nerModel else {
-            print("NER model is not available. Skipping item extraction.")
-            return [] // Return empty if model didn't load
+            return []
         }
         
         var foundItems: [ReceiptItem] = []
+        let tagger = NLTagger(tagSchemes: [.nameType])
+        tagger.setModels([nerModel], forTagScheme: .nameType)
         
-        // 1. Get the list of labels the model knows (e.g., "PRODUCT_NAME", "QUANTITY")
-        
-        // 2. Process each line of the receipt
         for line in lines {
-            // We create a "tagger" for each line
-            let tagger = NLTagger(tagSchemes: [.nameType])
             tagger.string = line
-            tagger.setModels([nerModel], forTagScheme: .nameType)
-            
-            // 3. Find all the tagged words in that line
             let tags = tagger.tags(in: line.startIndex..<line.endIndex,
                                    unit: .word,
                                    scheme: .nameType,
                                    options: [.omitWhitespace, .omitPunctuation])
             
-            // 4. Parse the tagged words
             var currentItemName = ""
-            var currentQuantity = 1 // Default to 1
+            var currentQuantity = 1
             var currentPrice: Double?
             
             for (tag, range) in tags {
                 let word = String(line[range])
-                
                 guard let label = tag?.rawValue else { continue }
                 
                 switch label {
                 case "PRODUCT_NAME":
-                    // Append to product name (e.g., "Pizza" + "Margherita")
                     currentItemName += word + " "
                 case "QUANTITY":
-                    // Try to parse the quantity
                     if let intQty = Int(word) {
                         currentQuantity = intQty
                     } else if let doubleQty = Double(word) {
-                        // Handle quantities like 1.5 (e.g., for kg)
-                        currentQuantity = Int(doubleQty) // Or store as Double
+                        currentQuantity = Int(doubleQty)
                     }
                 case "ITEM_PRICE":
-                    // Try to parse the price
                     let priceString = word.replacingOccurrences(of: ",", with: ".")
+                                        .replacingOccurrences(of: "$", with: "") // Remove currency symbols
                     currentPrice = Double(priceString)
                 default:
-                    // This is an "O" tag (Outside), so we ignore it
                     break
                 }
             }
             
-            // 5. After checking a full line, if we found a product and a price,
-            // create the ReceiptItem object.
             if let price = currentPrice, !currentItemName.isEmpty {
                 foundItems.append(ReceiptItem(
                     name: currentItemName.trimmingCharacters(in: .whitespaces),
@@ -118,40 +97,77 @@ class ReceiptExtractor {
                 ))
             }
         }
-        
         return foundItems
     }
     
-    // --- (The Regex functions for Total, Date, and Store Name remain unchanged) ---
-    
+    // --- UPDATED: Smarter findStoreName ---
     private func findStoreName(from lines: [String]) -> String {
-        return lines.first(where: { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ?? "Unknown Store"
+        // Get the first 5 non-empty lines
+        let topLines = lines.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.prefix(5)
+        
+        // This regex looks for date-like strings
+        let datePattern = #"\b(\d{1,2}[./-]\d{1,2}[./-]\d{2,4}|\d{4}[-/]\d{1,2}[-/]\d{1,2})\b"#
+        
+        for line in topLines {
+            // Trim whitespace
+            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
+            
+            // Ignore if it's just "DATE" or a day "WED"
+            if trimmedLine.uppercased() == "DATE" || trimmedLine.uppercased() == "WED" {
+                continue
+            }
+            // Ignore if it's just a date
+            if trimmedLine.range(of: datePattern, options: .regularExpression) != nil {
+                continue
+            }
+            // Ignore if it's just asterisks
+            if trimmedLine.trimmingCharacters(in: CharacterSet(charactersIn: "*")) == "" {
+                continue
+            }
+            
+            // If it's none of the above, it's our best guess for the store name
+            return trimmedLine
+        }
+        
+        // If we can't find anything, return "Unknown Store"
+        return "Unknown Store"
     }
     
+    // --- UPDATED: Smarter findTotalAmount ---
     private func findTotalAmount(from text: String) -> Double? {
-        let pattern = #"(?i)(?:total|totale|amount|importo|balance due|pagato|net total)\s*[:=\s]?\s*(\d+([,\.]\d{1,2})?)"#
+        // --- FIX: Added optional currency symbols like \$ (escaped) or € ---
+        // We look for keywords, then optional symbols, *then* the number.
+        let pattern = #"(?i)(?:total|totale|celkem|amount|importo)\s*[:=\s]?\s*[\$€]?\s*(\d+([,\.]\d{1,2})?)"#
+        
         do {
             let regex = try NSRegularExpression(pattern: pattern)
             let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
             var potentialTotals: [Double] = []
+            
             for match in matches {
                 if match.numberOfRanges > 1 {
                     let amountRange = match.range(at: 1)
                     if let swiftRange = Range(amountRange, in: text) {
-                        let amountString = String(text[swiftRange]).replacingOccurrences(of: ",", with: ".")
+                        // Get the string (e.g., "24.20")
+                        let amountString = String(text[swiftRange])
+                            .replacingOccurrences(of: ",", with: ".") // Standardize comma
+                        
                         if let amount = Double(amountString) {
                             potentialTotals.append(amount)
                         }
                     }
                 }
             }
+            // Return the largest number found (e.g., TOTAL, not SUBTOTAL)
             return potentialTotals.max()
+            
         } catch {
             print("Regex error finding total: \(error)")
             return nil
         }
     }
-    
+
+    // --- (findTransactionDate remains the same) ---
     private func findTransactionDate(from text: String) -> Date? {
         let pattern = #"\b(\d{1,2}[./-]\d{1,2}[./-]\d{2,4}|\d{4}[-/]\d{1,2}[-/]\d{1,2})\b"#
         do {

@@ -160,29 +160,52 @@ struct DashboardView: View {
     }
     
     // --- Main Logic: Processing Pipeline (Unchanged) ---
-    // FILE: DashboardView.swift (Updated function)
-
         private func processCapturedImage(_ image: UIImage) {
+            // 1. Start loading indicator
             isProcessing = true
             
             Task {
                 do {
+                    // Resize image
                     guard let resizedImage = image.resize(toWidth: 1500) else {
                         throw OCRError.processingFailed
                     }
                     
+                    // Step 1: Run OCR
                     let rawText = try await ocrProcessor.processImage(resizedImage)
                     
-                    // --- DEBUG ---
-                    print("--- OCR RAW TEXT ---")
-                    print(rawText)
-                    print("----------------------")
-                    
-                    // Step 2: Extract data (Now includes items!)
+                    // Step 2: Extract data
                     let extractedData = extractor.extractData(from: rawText)
                     
+                    // --- FIX: Give the classifier more context ---
+                    // We join the store name + the first 10 lines of raw text.
+                    // This gives the model a much better chance to see "ZUCHINNI", "BANANA", etc.
+                    let linesForClassifier = [extractedData.storeName] +
+                        rawText.split(separator: "\n").prefix(10).map { String($0) } // <-- FIX is here
+                    let classifierInput = linesForClassifier.joined(separator: " ")
+                    
                     // Step 3: Run Auto-Categorization
-                    let category = categorizer?.categorize(text: extractedData.storeName) ?? "Pending"
+                    let category = categorizer?.categorize(text: classifierInput) ?? "Pending"
+
+                    
+                    // --- 🔴 START DEBUGGING 🔴 ---
+                    // We will print the extracted data to see what went wrong.
+                    
+                    print("==========================================")
+                    print("           DEBUGGING OCR DATA")
+                    print("==========================================")
+                    print("\n--- RAW OCR TEXT ---")
+                    print(rawText)
+                    print("\n--- EXTRACTED DATA ---")
+                    print("Store Name (Input to ML): \(extractedData.storeName)")
+                    print("Total Amount (Found by Regex): \(extractedData.total ?? 0.0)")
+                    print("Date (Found by Regex): \(extractedData.date ?? Date())")
+                    print("\n--- ML PREDICTION ---")
+                    print("Category (Predicted by ML): \(category)")
+                    print("==========================================")
+                    
+                    // --- 🔴 END DEBUGGING 🔴 ---
+                    
                     
                     // Step 4: Create and save the new Receipt object
                     await MainActor.run {
@@ -192,12 +215,26 @@ struct DashboardView: View {
                             date: extractedData.date,
                             rawText: rawText,
                             category: category,
-                            items: extractedData.items // --- PASS THE ITEMS ---
+                            items: extractedData.items
                         )
+                        
+                        // 5. Stop loading
                         isProcessing = false
                     }
                     
                 } catch {
+                    // --- 🔴 START DEBUGGING CATCH BLOCK 🔴 ---
+                    
+                    print("==========================================")
+                    print("           🔴 AN ERROR OCCURRED 🔴")
+                    print("==========================================")
+                    print("The error is: \(error)")
+                    print("Localized Description: \(error.localizedDescription)")
+                    print("==========================================")
+                    
+                    // --- 🔴 END DEBUGGING CATCH BLOCK 🔴 ---
+                    
+                    // Handle any errors
                     showError(error.localizedDescription)
                     isProcessing = false
                 }
