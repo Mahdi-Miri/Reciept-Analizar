@@ -1,0 +1,14 @@
+{
+  "MLModelVersionStringKey" : "--",
+  "MLModelDescriptionKey" : "--",
+  "MLModelCreatorDefinedKey" : {
+    "com.apple.createml.training.finished" : "2025-11-10T10:12:08Z",
+    "com.apple.createml.app.tag" : "175.6",
+    "com.apple.createml.model.created" : "2025-11-10T10:12:08Z",
+    "com.apple.createml.app.version" : "6.2",
+    "com.apple.coreml.model.preview.type" : "textClassifier",
+    "com.apple.createml.training.started" : "2025-11-10T10:12:08Z"
+  },
+  "MLModelAuthorKey" : "Mahdi Miri",
+  "MLModelLicenseKey" : "--"
+}
