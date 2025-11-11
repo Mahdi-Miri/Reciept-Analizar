@@ -163,26 +163,22 @@ struct DashboardView: View {
     // FILE: DashboardView.swift (Updated function)
 
         private func processCapturedImage(_ image: UIImage) {
-            // 1. Start loading indicator
             isProcessing = true
             
-            // 2. Run the full pipeline asynchronously
             Task {
                 do {
-                    // --- FIX: Resize the image before OCR ---
-                    // We resize to a max width of 1500px. This is MUCH faster.
-                    // We use a guard let in case resizing fails.
                     guard let resizedImage = image.resize(toWidth: 1500) else {
-                        throw OCRError.processingFailed // Use our custom error
+                        throw OCRError.processingFailed
                     }
                     
-                    // Step 1: Run OCR on the *resized* image
                     let rawText = try await ocrProcessor.processImage(resizedImage)
+                    
+                    // --- DEBUG ---
                     print("--- OCR RAW TEXT ---")
                     print(rawText)
                     print("----------------------")
                     
-                    // Step 2: Extract data
+                    // Step 2: Extract data (Now includes items!)
                     let extractedData = extractor.extractData(from: rawText)
                     
                     // Step 3: Run Auto-Categorization
@@ -195,15 +191,13 @@ struct DashboardView: View {
                             total: extractedData.total,
                             date: extractedData.date,
                             rawText: rawText,
-                            category: category
+                            category: category,
+                            items: extractedData.items // --- PASS THE ITEMS ---
                         )
-                        
-                        // 5. Stop loading
                         isProcessing = false
                     }
                     
                 } catch {
-                    // Handle any errors
                     showError(error.localizedDescription)
                     isProcessing = false
                 }
@@ -211,20 +205,23 @@ struct DashboardView: View {
         }
     
     @MainActor
-    private func saveReceipt(storeName: String, total: Double?, date: Date?, rawText: String, category: String) {
-        let finalTotal = total ?? 0.0
-        let finalDate = date ?? Date()
-        
-        let newReceipt = Receipt(
-            storeName: storeName,
-            totalAmount: finalTotal,
-            transactionDate: finalDate,
-            category: category,
-            rawText: rawText,
-            items: []
-        )
-        modelContext.insert(newReceipt)
-    }
+    // FILE: DashboardView.swift (Updated function)
+
+        @MainActor
+        private func saveReceipt(storeName: String, total: Double?, date: Date?, rawText: String, category: String, items: [ReceiptItem]) { // <-- ADDED ITEMS
+            let finalTotal = total ?? 0.0
+            let finalDate = date ?? Date()
+            
+            let newReceipt = Receipt(
+                storeName: storeName,
+                totalAmount: finalTotal,
+                transactionDate: finalDate,
+                category: category,
+                rawText: rawText,
+                items: items // --- SAVE THE ITEMS ---
+            )
+            modelContext.insert(newReceipt)
+        }
     
     private func showError(_ message: String) {
         errorMessage = message
