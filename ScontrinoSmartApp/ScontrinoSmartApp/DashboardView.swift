@@ -160,32 +160,52 @@ struct DashboardView: View {
     }
     
     // --- Main Logic: Processing Pipeline (Unchanged) ---
-    private func processCapturedImage(_ image: UIImage) {
-        isProcessing = true
-        
-        Task {
-            do {
-                let rawText = try await ocrProcessor.processImage(image)
-                let extractedData = extractor.extractData(from: rawText)
-                let category = categorizer?.categorize(text: rawText) ?? "Pending"
-                
-                await MainActor.run {
-                    saveReceipt(
-                        storeName: extractedData.storeName,
-                        total: extractedData.total,
-                        date: extractedData.date,
-                        rawText: rawText,
-                        category: category
-                    )
+    // FILE: DashboardView.swift (Updated function)
+
+        private func processCapturedImage(_ image: UIImage) {
+            // 1. Start loading indicator
+            isProcessing = true
+            
+            // 2. Run the full pipeline asynchronously
+            Task {
+                do {
+                    // --- FIX: Resize the image before OCR ---
+                    // We resize to a max width of 1500px. This is MUCH faster.
+                    // We use a guard let in case resizing fails.
+                    guard let resizedImage = image.resize(toWidth: 1500) else {
+                        throw OCRError.processingFailed // Use our custom error
+                    }
+                    
+                    // Step 1: Run OCR on the *resized* image
+                    let rawText = try await ocrProcessor.processImage(resizedImage)
+                    
+                    // Step 2: Extract data
+                    let extractedData = extractor.extractData(from: rawText)
+                    
+                    // Step 3: Run Auto-Categorization
+                    let category = categorizer?.categorize(text: rawText) ?? "Pending"
+                    
+                    // Step 4: Create and save the new Receipt object
+                    await MainActor.run {
+                        saveReceipt(
+                            storeName: extractedData.storeName,
+                            total: extractedData.total,
+                            date: extractedData.date,
+                            rawText: rawText,
+                            category: category
+                        )
+                        
+                        // 5. Stop loading
+                        isProcessing = false
+                    }
+                    
+                } catch {
+                    // Handle any errors
+                    showError(error.localizedDescription)
                     isProcessing = false
                 }
-                
-            } catch {
-                showError(error.localizedDescription)
-                isProcessing = false
             }
         }
-    }
     
     @MainActor
     private func saveReceipt(storeName: String, total: Double?, date: Date?, rawText: String, category: String) {
