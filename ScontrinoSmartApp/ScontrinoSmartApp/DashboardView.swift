@@ -178,6 +178,9 @@ struct DashboardView: View {
                     
                     // Step 1: Run OCR on the *resized* image
                     let rawText = try await ocrProcessor.processImage(resizedImage)
+                    print("--- OCR RAW TEXT ---")
+                    print(rawText)
+                    print("----------------------")
                     
                     // Step 2: Extract data
                     let extractedData = extractor.extractData(from: rawText)
