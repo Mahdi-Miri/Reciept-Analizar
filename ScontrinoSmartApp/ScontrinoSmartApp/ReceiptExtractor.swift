@@ -5,46 +5,42 @@
 //  Created by Mahdi Miri on 10/11/25.
 //
 
-import Foundation
+// FILE: ReceiptExtractor.swift (REPLACE THE ENTIRE FILE)
 
-// This class is responsible for parsing the raw OCR text
-// into structured data (Store Name, Total, Date).
-// This is a non-trivial task that relies on finding common patterns.
+import Foundation
 
 class ReceiptExtractor {
     
-    // The main function to extract all possible data.
-    // It returns a 'draft' tuple, not a final Receipt object,
-    // as it might fail to find some pieces of information.
     func extractData(from rawText: String) -> (storeName: String, total: Double?, date: Date?) {
         
-        // We split the text into lines for easier processing.
         let lines = rawText.split(separator: "\n").map { String($0) }
         
         let storeName = findStoreName(from: lines)
-        let total = findTotalAmount(from: rawText)
-        let date = findTransactionDate(from: rawText)
+        let total = findTotalAmount(from: rawText) // Use the whole text for total
+        let date = findTransactionDate(from: rawText) // Use the whole text for date
         
         return (storeName, total, date)
     }
     
     // --- Private Helper Functions ---
 
-    // 1. Find Store Name
-    // Heuristic: The store name is often the first non-empty line of the receipt.
-    // This is a simple guess and can be improved later.
     private func findStoreName(from lines: [String]) -> String {
-        // Find the first line that isn't just whitespace
+        // Heuristic: The store name is often the first non-empty line.
+        // This is still weak but is the simplest approach.
         return lines.first(where: { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ?? "Unknown Store"
     }
     
-    // 2. Find Total Amount
-    // This function searches for keywords (Total, Totale) and then looks
-    // for the largest number near them.
+    
+    // --- IMPROVED: findTotalAmount ---
     private func findTotalAmount(from text: String) -> Double? {
-        // This regex looks for keywords (case-insensitive)
-        // followed by numbers (handling both 10.50 and 10,50)
-        let pattern = #"(?i)(?:total|totale|amount|importo)\s*[:]?\s*(\d+[,.]\d{2})"#
+        
+        // This is a much stronger Regex.
+        // (?i) = Case-insensitive
+        // (total|totale|...|pagato) = Looks for any of these keywords
+        // \s*[:=\s]?\s* = Looks for a space, colon, equals sign, or just more space
+        // (\d+[,\.]\d{1,2}) = Captures a number like 10.50 or 10,50
+        // (\d+) = Captures a whole number like 10
+        let pattern = #"(?i)(?:total|totale|amount|importo|balance due|pagato|net total)\s*[:=\s]?\s*(\d+([,\.]\d{1,2})?)"#
         
         do {
             let regex = try NSRegularExpression(pattern: pattern)
@@ -53,13 +49,16 @@ class ReceiptExtractor {
             var potentialTotals: [Double] = []
             
             for match in matches {
+                // The captured group is at index 1 (the number itself)
                 if match.numberOfRanges > 1 {
-                    // Get the captured group (the number itself)
                     let amountRange = match.range(at: 1)
                     if let swiftRange = Range(amountRange, in: text) {
                         
-                        // Convert text to a Double, replacing comma with dot for decimals
-                        let amountString = String(text[swiftRange]).replacingOccurrences(of: ",", with: ".")
+                        // Get the string (e.g., "10,50")
+                        let amountString = String(text[swiftRange])
+                            // Standardize by replacing comma with dot
+                            .replacingOccurrences(of: ",", with: ".")
+                        
                         if let amount = Double(amountString) {
                             potentialTotals.append(amount)
                         }
@@ -67,8 +66,8 @@ class ReceiptExtractor {
                 }
             }
             
-            // Often, the receipt shows Subtotal, Tax, and Total.
-            // The largest value is usually the final total.
+            // Heuristic: The largest number found near a "total" keyword
+            // is *probably* the final total (as opposed to subtotal).
             return potentialTotals.max()
             
         } catch {
@@ -76,24 +75,28 @@ class ReceiptExtractor {
             return nil
         }
     }
+
     
-    // 3. Find Transaction Date
-    // This searches for common date formats (dd/mm/yyyy, dd.mm.yyyy, mm/dd/yyyy)
+    // --- IMPROVED: findTransactionDate ---
     private func findTransactionDate(from text: String) -> Date? {
-        // This regex looks for common date formats
-        let pattern = #"\b(\d{1,2}[./-]\d{1,2}[./-]\d{2,4})\b"#
+        
+        // This regex looks for:
+        // dd/mm/yyyy, dd.mm.yyyy, dd-mm-yyyy
+        // mm/dd/yyyy
+        // yyyy-mm-dd (ISO)
+        let pattern = #"\b(\d{1,2}[./-]\d{1,2}[./-]\d{2,4}|\d{4}[-/]\d{1,2}[-/]\d{1,2})\b"#
         
         do {
             let regex = try NSRegularExpression(pattern: pattern)
             let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
             
+            // We define all common formats to try
             let dateFormats = [
-                "dd/MM/yyyy",
-                "dd.MM.yyyy",
-                "MM/dd/yyyy",
-                "dd/MM/yy",
-                "dd.MM.yy",
-                "MM/dd/yy"
+                "dd/MM/yyyy", "dd.MM.yyyy", "dd-MM-yyyy",
+                "MM/dd/yyyy", "MM.dd.yyyy", "MM-dd-yyyy",
+                "yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd",
+                "dd/MM/yy", "dd.MM.yy", "dd-MM-yy",
+                "MM/dd/yy", "MM.dd.yy", "MM-dd-yy"
             ]
             
             let formatter = DateFormatter()
@@ -123,13 +126,8 @@ class ReceiptExtractor {
         }
     }
     
-    // 4. Find Items (Placeholder)
-    // NOTE: Extracting line items is the *hardest* part of this process
-    // and is a full "Named Entity Recognition" (NER) task.
-    // A simple Regex is very brittle. We will stub this for now
-    // and can implement a real ML model for it later.
+    // (findItems is still a stub, as it's the most complex part)
     func findItems(from rawText: String) -> [ReceiptItem] {
-        // TODO: Implement line item extraction (Advanced ML/NER task)
-        return [] // Return an empty array for now
+        return []
     }
 }
