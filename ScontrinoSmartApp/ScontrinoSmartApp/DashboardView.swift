@@ -183,7 +183,7 @@ struct DashboardView: View {
                     let extractedData = extractor.extractData(from: rawText)
                     
                     // Step 3: Run Auto-Categorization
-                    let category = categorizer?.categorize(text: rawText) ?? "Pending"
+                    let category = categorizer?.categorize(text: extractedData.storeName) ?? "Pending"
                     
                     // Step 4: Create and save the new Receipt object
                     await MainActor.run {
