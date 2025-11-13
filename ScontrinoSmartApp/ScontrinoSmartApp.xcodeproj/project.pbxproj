@@ -10,22 +10,9 @@
 		8B2969842EC1FEA1002DE827 /* ScontrinoSmartApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScontrinoSmartApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8B2969912EC1FEA2002DE827 /* Exceptions for "ScontrinoSmartApp" folder in "ScontrinoSmartApp" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 8B2969832EC1FEA1002DE827 /* ScontrinoSmartApp */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8B2969862EC1FEA1002DE827 /* ScontrinoSmartApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8B2969912EC1FEA2002DE827 /* Exceptions for "ScontrinoSmartApp" folder in "ScontrinoSmartApp" target */,
-			);
 			path = ScontrinoSmartApp;
 			sourceTree = "<group>";
 		};
