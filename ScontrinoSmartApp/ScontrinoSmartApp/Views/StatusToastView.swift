@@ -5,56 +5,54 @@
 //  Created by Mahdi Miri on 13/11/25.
 //
 
-// StatusToastView.swift
-// Small top toast for scan status messages (success / error / processing)
-
 import SwiftUI
 
+/// Displays a status banner for scan process (processing, success, or error).
 struct StatusToastView: View {
-    var isProcessing: Bool
-    var errorMessage: String?
-    var lastScanMessage: String?
+    let isProcessing: Bool
+    let errorMessage: String?
+    let lastScanMessage: String?
 
     var body: some View {
         VStack {
             if isProcessing {
-                labelView(icon: "hourglass.circle.fill", text: "Processing...", color: .blue)
+                Label("Processing receipt...", systemImage: "hourglass")
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             } else if let errorMessage = errorMessage {
-                labelView(icon: "xmark.octagon.fill", text: errorMessage, color: .red)
+                Label(errorMessage, systemImage: "xmark.octagon.fill")
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             } else if let lastScanMessage = lastScanMessage {
-                labelView(icon: "checkmark.circle.fill", text: lastScanMessage, color: .green)
+                Label(lastScanMessage, systemImage: "checkmark.circle.fill")
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green)
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 6)
-        .padding(.top, 10)
-        .transition(.move(edge: .top).combined(with: .opacity))
-    }
-
-    private func labelView(icon: String, text: String, color: Color) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: icon)
-                .foregroundColor(color)
-                .font(.system(size: 18, weight: .semibold))
-            Text(text)
-                .font(.subheadline)
-                .foregroundColor(.primary)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
-        }
+        .animation(.easeInOut, value: isProcessing)
     }
 }
 
 #Preview {
-    VStack {
-        StatusToastView(isProcessing: false, errorMessage: nil, lastScanMessage: "Success! Receipt added.")
-        StatusToastView(isProcessing: false, errorMessage: "Failed to scan", lastScanMessage: nil)
+    VStack(spacing: 20) {
         StatusToastView(isProcessing: true, errorMessage: nil, lastScanMessage: nil)
+        StatusToastView(isProcessing: false, errorMessage: "Scan failed.", lastScanMessage: nil)
+        StatusToastView(isProcessing: false, errorMessage: nil, lastScanMessage: "Success! Receipt added.")
     }
     .padding()
-    .background(Color(.systemGroupedBackground))
 }
-

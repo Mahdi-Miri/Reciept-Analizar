@@ -88,10 +88,6 @@ struct ModernDashboardView: View {
                         Text("RECENT RECEIPTS")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        Spacer()
-                        Button("See all") {
-                            // action
-                        }
                         .font(.caption)
                         .foregroundColor(.blue)
                     }
@@ -102,7 +98,7 @@ struct ModernDashboardView: View {
                     } else {
                         ForEach(appState.receipts.prefix(4), id: \.id) { receipt in
                             ReceiptRowView(receipt: receipt, currencyCode: currencyCode)
-                                .padding(.vertical, 6)
+                                .padding(.vertical, 2)
                         }
                     }
                 }

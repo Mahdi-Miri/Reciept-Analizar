@@ -5,22 +5,31 @@
 //  Created by Mahdi Miri on 13/11/25.
 //
 
-// FloatingTabBar.swift
-// A modern floating pill-shaped tab bar with subtle blur and shadow.
-// Add this as a new file and import where needed.
-
 import SwiftUI
 
+// 1. Define the Tab enum here (or in its own file)
+// This makes it available to both ContentView and FloatingTabBar.
+enum Tab: CaseIterable {
+    case dashboard
+    case scan
+    // Add other tabs here if you need them
+}
+
 struct FloatingTabBar: View {
-    @Binding var selectedTab: ContentView.Tab
+    
+    // 2. Create a namespace property for the animation
+    @Namespace private var animationNamespace
+
+    // 3. Bind to the independent 'Tab' enum, not 'ContentView.Tab'
+    @Binding var selectedTab: Tab
 
     var body: some View {
         HStack(spacing: 24) {
+            // Pass the namespace to each button
             tabButton(icon: "chart.pie.fill", title: "Dashboard", tab: .dashboard)
-            Spacer(minLength: 12)
             tabButton(icon: "camera.fill", title: "Scan", tab: .scan)
         }
-        .padding(.vertical, 12)
+        .padding(.vertical, 2)
         .padding(.horizontal, 18)
         .background(.ultraThinMaterial)
         .clipShape(Capsule())
@@ -34,7 +43,8 @@ struct FloatingTabBar: View {
     }
 
     @ViewBuilder
-    private func tabButton(icon: String, title: String, tab: ContentView.Tab) -> some View {
+    // 4. Update the function to accept the independent 'Tab' enum
+    private func tabButton(icon: String, title: String, tab: Tab) -> some View {
         Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                 selectedTab = tab
@@ -44,6 +54,7 @@ struct FloatingTabBar: View {
                 Image(systemName: icon)
                     .font(.system(size: 20, weight: .semibold))
                     .frame(width: 28)
+                
                 if selectedTab == tab {
                     Text(title)
                         .font(.subheadline)
@@ -51,15 +62,19 @@ struct FloatingTabBar: View {
                         .transition(.scale.combined(with: .opacity))
                 }
             }
+            // Using .blue here matches your white/blue theme preference
             .foregroundColor(selectedTab == tab ? .blue : Color.primary.opacity(0.7))
-            .padding(.vertical, 6)
+            .padding(.vertical, 2)
             .padding(.horizontal, 8)
             .background(
                 Group {
                     if selectedTab == tab {
                         RoundedRectangle(cornerRadius: 12)
+                            // Using .blue here matches your white/blue theme preference
                             .fill(Color.blue.opacity(0.12))
-                            .matchedGeometryEffect(id: "tabBackground", in: Namespace().wrappedValue, properties: .frame)
+                            // 5. Use the shared 'animationNamespace'
+                            // (Using Namespace() here creates a new one every time, breaking the animation)
+                            .matchedGeometryEffect(id: "tabBackground", in: animationNamespace)
                     } else {
                         Color.clear
                     }

@@ -5,51 +5,48 @@
 //  Created by Mahdi Miri on 13/11/25.
 //
 
-// ReceiptRowView.swift
-// Small reusable row to display a scanned receipt summary.
-
 import SwiftUI
 
+/// Displays a single scanned receipt row in the dashboard list.
 struct ReceiptRowView: View {
     let receipt: ScannedReceipt
     let currencyCode: String
 
     var body: some View {
         HStack(spacing: 14) {
-            // Thumbnail / icon
+            // Thumbnail icon
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.blue.opacity(0.12))
+                    .fill(Color.blue.opacity(0.15))
                     .frame(width: 44, height: 44)
                 Image(systemName: "doc.text.fill")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.blue)
             }
 
-            // Receipt info
+            // Receipt details
             VStack(alignment: .leading, spacing: 4) {
-                Text(receipt.storeName)
+                Text(receipt.date, style: .date)
                     .font(.headline)
                     .foregroundColor(.primary)
 
-                Text(receipt.date, style: .date)
+                Text("\(receipt.items.count) items")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
 
-            Spacer()
 
-            // Amount
+
+            // Total price
             Text(receipt.total, format: .currency(code: currencyCode))
                 .font(.headline)
                 .foregroundColor(.green)
         }
+        .padding(.vertical, 2)
         .padding(.horizontal, 6)
-        .padding(.vertical, 4)
     }
 }
 
-// MARK: - Preview
 #Preview {
     ReceiptRowView(
         receipt: SampleData.receipts.first!,
@@ -58,4 +55,5 @@ struct ReceiptRowView: View {
     .previewLayout(.sizeThatFits)
     .padding()
 }
+
 

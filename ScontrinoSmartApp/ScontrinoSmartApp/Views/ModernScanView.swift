@@ -33,13 +33,12 @@ struct ModernScanView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
-                    Spacer()
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
 
-                Spacer()
 
+            
                 // Large circular scan button with micro animation
                 Button(action: startScan) {
                     VStack(spacing: 10) {
@@ -64,7 +63,6 @@ struct ModernScanView: View {
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, 40)
 
-                Spacer()
             }
 
             // Status toast at top
@@ -72,7 +70,6 @@ struct ModernScanView: View {
                 VStack {
                     StatusToastView(isProcessing: isProcessing, errorMessage: errorMessage, lastScanMessage: lastScanMessage)
                         .padding(Edge.Set.top, 10)
-                    Spacer()
                 }
                 .transition(.move(edge: Edge.top).combined(with: .opacity))
             }
