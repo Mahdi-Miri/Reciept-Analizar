@@ -7,6 +7,7 @@
 
 import SwiftUI
 import VisionKit
+
 // This is the UIKit bridge to show the VNDocumentCameraViewController
 struct DocumentScanner: UIViewControllerRepresentable {
     
@@ -36,7 +37,7 @@ struct DocumentScanner: UIViewControllerRepresentable {
         }
         
         // Success: User scanned documents
-        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentScan) {
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan){
             var images: [CGImage] = []
             for i in 0..<scan.pageCount {
                 if let cgImage = scan.imageOfPage(at: i).cgImage {
