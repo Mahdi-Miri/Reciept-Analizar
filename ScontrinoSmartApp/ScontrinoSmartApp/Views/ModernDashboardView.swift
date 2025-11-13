@@ -4,10 +4,8 @@
 //
 //  Created by Mahdi Miri on 13/11/25.
 //
-
-// ModernDashboardView.swift
-// A fresh dashboard redesign: cards, spacing, better typography, small entrance animations.
-// Replace old DashboardView with this file.
+//  *** THIS FILE FIXES THE WHITE BACKGROUND ***
+//
 
 import SwiftUI
 import Charts
@@ -22,6 +20,7 @@ struct ModernDashboardView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
+                
                 // Top greeting + quick actions row
                 HStack {
                     VStack(alignment: .leading, spacing: 6) {
@@ -33,10 +32,7 @@ struct ModernDashboardView: View {
                             .fontWeight(.bold)
                     }
                     Spacer()
-                    // Small quick action button
-                    Button {
-                        // quick action
-                    } label: {
+                    Button { } label: {
                         Image(systemName: "bell.fill")
                             .font(.title3)
                             .padding(8)
@@ -72,9 +68,9 @@ struct ModernDashboardView: View {
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, minHeight: 160, alignment: .center)
                     } else {
-                        CategoryPieChartView(spendingData: appState.categorySpendingData)
-                            .frame(height: 240)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                         CategoryPieChartView(spendingData: appState.categorySpendingData)
+                           .frame(height: 240)
+                           .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                 }
                 .padding(16)
@@ -88,8 +84,7 @@ struct ModernDashboardView: View {
                         Text("RECENT RECEIPTS")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        // Removed the duplicate "View All" link, kept the structure clean
-                        // If you need "View All", add a NavigationLink here.
+                        Spacer()
                     }
                     if appState.receipts.isEmpty {
                         Text("Your scanned receipts will appear here.")
@@ -106,20 +101,29 @@ struct ModernDashboardView: View {
                 .background(.ultraThinMaterial)
                 .cornerRadius(16)
                 .shadow(color: .black.opacity(0.06), radius: 10, y: 5)
-
-                Spacer(minLength: 30)
+                
+                // Spacer for content to not go under the tab bar
+                Spacer(minLength: 120)
             }
-            .padding(16) // This padding is important, keep it.
+            .padding(16)
         }
         .scrollIndicators(.hidden)
-        // *** THIS IS THE KEY CHANGE ***
-        // Makes the ScrollView background transparent
+        
+        // ----------------------------------------------------
+        // *** THIS IS THE CRITICAL FIX FOR THE WHITE BACKGROUND ***
+        // This modifier makes the ScrollView transparent
+        // so the AnimatedBackgroundView can be seen.
         .scrollContentBackground(.hidden)
+        // ----------------------------------------------------
     }
 }
 
-// Preview
 #Preview {
-    ModernDashboardView()
-        .environmentObject(AppState(receipts: SampleData.receipts))
+    ZStack {
+        AnimatedBackgroundView()
+            .ignoresSafeArea()
+        
+        ModernDashboardView()
+            .environmentObject(AppState(receipts: SampleData.receipts))
+    }
 }

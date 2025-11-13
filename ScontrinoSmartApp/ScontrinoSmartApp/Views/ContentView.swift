@@ -4,56 +4,61 @@
 //
 //  Created by Mahdi Miri on 13/11/25.
 //
+//  *** THIS IS THE CORRECTED LAYOUT FILE ***
+//
 
 import SwiftUI
 
-/// Main entry view for the application.
-/// Contains tab navigation and ensures full-screen display.
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
     
+    // 1. State to manage the selected tab
+    @State private var selectedTab: Tab = .dashboard
+
     var body: some View {
-        // 1. Wrap in a ZStack to layer the background
+        // 2. ZStack to layer everything
         ZStack {
-            // 2. Add the animated background as the bottom-most layer
-            // This provides the blue/white theme you requested
-            AnimatedBackgroundView()
             
-            // 3. Your TabView now sits on top of the background
-            TabView {
-                // Dashboard tab
-                NavigationStack {
-                    ModernDashboardView()
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle("Dashboard")
-                    // 4. We remove ignoresSafeArea from here
-                }
-                .tabItem {
-                    Label("Dashboard", systemImage: "chart.pie.fill")
+            // 3. LAYER 1: THE BACKGROUND
+            // ONLY the background ignores the safe area
+            // and fills the entire screen.
+            AnimatedBackgroundView()
+                .ignoresSafeArea(.all, edges: .all)
+
+            // 4. LAYER 2: THE CONTENT + TAB BAR
+            // This VStack RESPECTS the safe area by default.
+            VStack(spacing: 0) {
+                
+                // 5. The main content
+                switch selectedTab {
+                case .dashboard:
+                    NavigationStack {
+                        ModernDashboardView()
+                            .navigationBarTitleDisplayMode(.inline)
+                            .navigationTitle("Dashboard")
+                    }
+                case .scan:
+                    NavigationStack {
+                        ModernScanView()
+                            .navigationBarTitleDisplayMode(.inline)
+                            .navigationTitle("Scan")
+                    }
                 }
                 
-                // Scan tab
-                NavigationStack {
-                    ModernScanView()
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle("Scan")
-                    // 4. We remove ignoresSafeArea from here too
-                }
-                .tabItem {
-                    Label("Scan", systemImage: "camera.viewfinder")
-                }
+                // 6. Spacer pushes the tab bar to the bottom
+                Spacer()
+                
+                // 7. The tab bar sits AT THE BOTTOM of the
+                // SAFE AREA, so it won't be cut off.
+                FloatingTabBar(selectedTab: $selectedTab)
             }
-            // Accent color for selected tab
-            .accentColor(.blue)
-            // 5. We removed the ignoresSafeArea from the TabView itself
+            // 8. NO .ignoresSafeArea modifier on this VStack
         }
-        // 6. Apply ONE ignoresSafeArea to the outer ZStack
-        // This ensures the background stretches edge-to-edge
-        .ignoresSafeArea(.all, edges: .all)
+        // 9. NO .ignoresSafeArea modifier on the ZStack
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(AppState())
+        .environmentObject(AppState(receipts: SampleData.receipts))
 }
