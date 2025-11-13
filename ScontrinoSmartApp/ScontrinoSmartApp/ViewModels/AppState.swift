@@ -18,10 +18,8 @@ class AppState: ObservableObject {
     init(receipts: [ScannedReceipt] = SampleData.receipts) {
         self.receipts = receipts
     }
-    
-    // --- Computed Properties for Dashboard ---
-    
-    var totalSpent: Double {
+    var totalSpend: Double {
+        // This sums up the 'total' from every receipt in the array
         receipts.reduce(0) { $0 + $1.total }
     }
     
@@ -47,4 +45,5 @@ class AppState: ObservableObject {
         // Insert at the top for chronological order
         receipts.insert(receipt, at: 0)
     }
+    
 }
