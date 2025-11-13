@@ -1,67 +1,81 @@
 //
-//  ContentView.swift
+//  ScontrinoSmartApp.swift
 //  ScontrinoSmartApp
 //
-//  Created by Mahdi Miri on 13/11/25.
-//
-//  *** THIS FILE FIXES THE LAYOUT AND TAB BAR ***
+//  Main App Entry Point
 //
 
 import SwiftUI
 
-struct ContentView: View {
-    @EnvironmentObject var appState: AppState
-    
-    // 1. State to manage the selected tab
-    @State private var selectedTab: Tab = .dashboard
-
-    var body: some View {
-        // 2. ZStack to layer everything
-        ZStack {
-            
-            // 3. LAYER 1: THE BACKGROUND
-            // This view ignores the safe area and fills
-            // the entire screen, including behind the status bar
-            // and home indicator.
-            AnimatedBackgroundView()
-                .ignoresSafeArea(.all, edges: .all)
-
-            // 4. LAYER 2: THE CONTENT + TAB BAR
-            // This VStack RESPECTS the safe area by default.
-            VStack(spacing: 0) {
-                
-                // 5. The main content (Dashboard or Scan)
-                switch selectedTab {
-                case .dashboard:
-                    NavigationStack {
-                        ModernDashboardView()
-                            .navigationBarTitleDisplayMode(.inline)
-                            .navigationTitle("Dashboard")
-                    }
-                case .scan:
-                    NavigationStack {
-                        // Assuming ModernScanView exists
-                        ModernScanView()
-                            .navigationBarTitleDisplayMode(.inline)
-                            .navigationTitle("Scan")
-                    }
-                }
-                
-                // 6. Spacer pushes the tab bar to the bottom
-                // of the VStack's available space.
-                Spacer()
-                
-                // 7. The tab bar sits AT THE BOTTOM of the
-                // SAFE AREA, so it will not be cut off.
-                FloatingTabBar(selectedTab: $selectedTab)
-            }
-            // 8. We DO NOT apply .ignoresSafeArea to this VStack
+@main
+struct ScontrinoSmartApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
         }
-        // 9. We DO NOT apply .ignoresSafeArea to the ZStack
+    }
+}
+
+//
+//  ContentView.swift
+//  Main tab view with floating scan button
+//
+
+struct ContentView: View {
+    @StateObject private var appState = AppState()
+    @State private var selectedTab = 0
+    @State private var showingScanner = false
+    
+    var body: some View {
+        ZStack {
+            TabView(selection: $selectedTab) {
+                // Dashboard Tab
+                DashboardView()
+                    .tabItem {
+                        Label("Dashboard", systemImage: "chart.bar.fill")
+                    }
+                    .tag(0)
+                
+                // Receipts Tab
+                NavigationView {
+                    ReceiptsListView()
+                }
+                .tabItem {
+                    Label("Receipts", systemImage: "doc.text.fill")
+                }
+                .tag(1)
+            }
+            .environmentObject(appState)
+            
+            // Floating Action Button (Scan Button)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: { showingScanner = true }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue)
+                                .frame(width: 60, height: 60)
+                                .shadow(color: Color.blue.opacity(0.4), radius: 10, x: 0, y: 5)
+                            
+                            Image(systemName: "camera.fill")
+                                .font(.title2)
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 20)
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showingScanner) {
+            ScannerView()
+                .environmentObject(appState)
+        }
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(AppState(receipts: SampleData.receipts))
 }
