@@ -1,73 +1,65 @@
-//
-//  CategoryPieChartView.swift
-//  ScontrinoSmartApp
-//
-//  Created by Mahdi Miri on 13/11/25.
-//
-//  --- CREATIVE UPGRADE ---
-//  We add an annotation to the center of the
-//  donut chart to show the total amount.
-//
+// CategoryPieChartView.swift
+// Pie chart with donut center showing total and modern slice styling.
+// Replace the previous CategoryPieChartView content with this file.
 
 import SwiftUI
 import Charts
 
 struct CategoryPieChartView: View {
     let spendingData: [CategorySpending]
-    
-    // Calculate the total spend
+
     private var totalSpend: Double {
         spendingData.reduce(0) { $0 + $1.amount }
     }
-    
-    // Get the local currency
+
     private var currencyCode: String {
         Locale.current.currency?.identifier ?? "USD"
     }
 
     var body: some View {
         Chart(spendingData) { item in
-            // Create a SectorMark for the pie chart
             SectorMark(
                 angle: .value("Amount", item.amount),
-                innerRadius: .ratio(0.618), // Creates the donut hole
-                angularInset: 1.5 // Adds spacing between slices
+                innerRadius: .ratio(0.62),
+                angularInset: 1.2
             )
             .foregroundStyle(by: .value("Category", item.category.rawValue))
-            .cornerRadius(5)
+            // .cornerRadius is allowed on Chart marks (as of modern Charts), but keep subtle
+            .cornerRadius(6)
+            .annotation(position: .overlay, alignment: .center) {
+                // center annotation is handled globally; keep slices clean
+                EmptyView()
+            }
         }
-        // Use the custom colors defined in the enum
         .chartForegroundStyleScale(
             domain: spendingData.map { $0.category.rawValue },
             range: spendingData.map { $0.category.color }
         )
-        // Add a legend
         .chartLegend(position: .bottom, alignment: .center)
-        // --- THIS IS THE UPGRADE (FINAL FIX) ---
-        // We use a GeometryReader to find the center of the space
-        // provided by the chartBackground modifier.
-        .chartBackground { chartProxy in // We must accept chartProxy, even if unused
-            GeometryReader { geometry in
-                // Get the frame of the GeometryReader itself
-                let frame = geometry.frame(in: .local)
-                
-                VStack {
+        .chartBackground { proxy in
+            GeometryReader { geo in
+                let frame = geo.frame(in: .local)
+                VStack(spacing: 6) {
                     Text("Total")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Text(totalSpend, format: .currency(code: currencyCode))
                         .font(.headline)
                         .fontWeight(.bold)
+                        .foregroundStyle(.primary)
                 }
-                // Use the GeometryReader's frame properties
                 .frame(width: frame.width, height: frame.height)
                 .position(x: frame.midX, y: frame.midY)
             }
         }
+        .padding(.vertical, 6)
     }
 }
 
+// Preview
 #Preview {
     CategoryPieChartView(spendingData: AppState(receipts: SampleData.receipts).categorySpendingData)
+        .frame(height: 260)
         .padding()
 }
+

@@ -1,13 +1,9 @@
-//
-//  View+Extensions.swift
-//  ScontrinoSmartApp
-//
-//  Created by Mahdi Miri on 13/11/25.
-//
+// View+Extensions.swift
+// Helpful view extensions used across the app.
 
 import SwiftUI
 
-// A custom shape for drawing borders only on specific edges
+// Custom shape drawing borders for specific edges
 struct EdgeBorder: Shape {
     var width: CGFloat
     var edges: [Edge]
@@ -16,7 +12,6 @@ struct EdgeBorder: Shape {
         var path = Path()
         for edge in edges {
             var x: CGFloat = 0, y: CGFloat = 0, x2: CGFloat = 0, y2: CGFloat = 0
-            
             switch edge {
             case .top:
                 x = rect.minX; y = rect.minY; x2 = rect.maxX; y2 = rect.minY
@@ -34,12 +29,12 @@ struct EdgeBorder: Shape {
     }
 }
 
-// A View extension to easily apply the edge border
 extension View {
+    // Apply border on selected edges only
     func border(width: CGFloat, edges: [Edge], color: Color) -> some View {
         overlay(
             EdgeBorder(width: width, edges: edges)
-                .stroke(color, lineWidth: width) // Correct way to stroke the shape
+                .stroke(color, lineWidth: width)
         )
     }
 }
