@@ -4,7 +4,7 @@
 //
 //  Created by Mahdi Miri on 13/11/25.
 //
-//  *** THIS IS THE CORRECTED LAYOUT FILE ***
+//  *** THIS IS THE CORRECT LAYOUT FILE ***
 //
 
 import SwiftUI

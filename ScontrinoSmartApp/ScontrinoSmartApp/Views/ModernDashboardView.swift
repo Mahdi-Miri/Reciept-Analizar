@@ -4,7 +4,7 @@
 //
 //  Created by Mahdi Miri on 13/11/25.
 //
-//  *** THIS FILE FIXES THE WHITE BACKGROUND ***
+//  *** THIS IS THE FINAL VERSION WITH ALL YOUR CONTENT RESTORED ***
 //
 
 import SwiftUI
@@ -16,12 +16,13 @@ struct ModernDashboardView: View {
     private var currencyCode: String {
         Locale.current.currency?.identifier ?? "USD"
     }
-
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
                 
-                // Top greeting + quick actions row
+                // --- YOUR CONTENT IS RESTORED ---
+                
+                // 1. Top greeting + quick actions row (Restored)
                 HStack {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Good afternoon,")
@@ -42,7 +43,7 @@ struct ModernDashboardView: View {
                 }
                 .padding(.horizontal, 6)
 
-                // Card: Total Spend
+                // 2. Card: Total Spend (Restored)
                 VStack(alignment: .leading, spacing: 10) {
                     Text("TOTAL SPEND")
                         .font(.caption)
@@ -58,9 +59,9 @@ struct ModernDashboardView: View {
                 .cornerRadius(16)
                 .shadow(color: .black.opacity(0.08), radius: 18, y: 8)
 
-                // Card: Categories (chart)
+                // 3. Card: Categories (chart) (Restored)
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("SPENDING BY CATEGORY")
+                    Text("SPENDING BY CATEGORY") // <--
                         .font(.caption)
                         .foregroundColor(.secondary)
                     if appState.categorySpendingData.isEmpty {
@@ -78,7 +79,7 @@ struct ModernDashboardView: View {
                 .cornerRadius(16)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 6)
 
-                // Card: Recent receipts condensed
+                // 4. Card: Recent receipts condensed (Restored)
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
                         Text("RECENT RECEIPTS")
@@ -102,7 +103,7 @@ struct ModernDashboardView: View {
                 .cornerRadius(16)
                 .shadow(color: .black.opacity(0.06), radius: 10, y: 5)
                 
-                // Spacer for content to not go under the tab bar
+                // 5. Spacer for content to not go under the tab bar
                 Spacer(minLength: 120)
             }
             .padding(16)
@@ -112,7 +113,6 @@ struct ModernDashboardView: View {
         // ----------------------------------------------------
         // *** THIS IS THE CRITICAL FIX FOR THE WHITE BACKGROUND ***
         // This modifier makes the ScrollView transparent
-        // so the AnimatedBackgroundView can be seen.
         .scrollContentBackground(.hidden)
         // ----------------------------------------------------
     }
