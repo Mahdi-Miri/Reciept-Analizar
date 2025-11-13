@@ -7,7 +7,6 @@
 
 import SwiftUI
 import VisionKit
-
 // This is the UIKit bridge to show the VNDocumentCameraViewController
 struct DocumentScanner: UIViewControllerRepresentable {
     
