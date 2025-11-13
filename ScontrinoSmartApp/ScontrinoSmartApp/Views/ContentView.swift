@@ -4,7 +4,7 @@
 //
 //  Created by Mahdi Miri on 13/11/25.
 //
-//  *** THIS IS THE CORRECT LAYOUT FILE ***
+//  *** THIS FILE FIXES THE LAYOUT AND TAB BAR ***
 //
 
 import SwiftUI
@@ -20,8 +20,9 @@ struct ContentView: View {
         ZStack {
             
             // 3. LAYER 1: THE BACKGROUND
-            // ONLY the background ignores the safe area
-            // and fills the entire screen.
+            // This view ignores the safe area and fills
+            // the entire screen, including behind the status bar
+            // and home indicator.
             AnimatedBackgroundView()
                 .ignoresSafeArea(.all, edges: .all)
 
@@ -29,7 +30,7 @@ struct ContentView: View {
             // This VStack RESPECTS the safe area by default.
             VStack(spacing: 0) {
                 
-                // 5. The main content
+                // 5. The main content (Dashboard or Scan)
                 switch selectedTab {
                 case .dashboard:
                     NavigationStack {
@@ -39,6 +40,7 @@ struct ContentView: View {
                     }
                 case .scan:
                     NavigationStack {
+                        // Assuming ModernScanView exists
                         ModernScanView()
                             .navigationBarTitleDisplayMode(.inline)
                             .navigationTitle("Scan")
@@ -46,15 +48,16 @@ struct ContentView: View {
                 }
                 
                 // 6. Spacer pushes the tab bar to the bottom
+                // of the VStack's available space.
                 Spacer()
                 
                 // 7. The tab bar sits AT THE BOTTOM of the
-                // SAFE AREA, so it won't be cut off.
+                // SAFE AREA, so it will not be cut off.
                 FloatingTabBar(selectedTab: $selectedTab)
             }
-            // 8. NO .ignoresSafeArea modifier on this VStack
+            // 8. We DO NOT apply .ignoresSafeArea to this VStack
         }
-        // 9. NO .ignoresSafeArea modifier on the ZStack
+        // 9. We DO NOT apply .ignoresSafeArea to the ZStack
     }
 }
 
