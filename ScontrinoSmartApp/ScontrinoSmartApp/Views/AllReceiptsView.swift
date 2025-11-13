@@ -25,7 +25,7 @@ struct AllReceiptsView: View {
         }
         .navigationTitle("All Receipts")
         .navigationBarTitleDisplayMode(.inline)
-        .background(Color(.systemGroupedBackground))
+        // .background(Color(.systemGroupedBackground)) // <-- This line was removed
     }
 }
 
@@ -33,4 +33,3 @@ struct AllReceiptsView: View {
     AllReceiptsView(currencyCode: "EUR")
         .environmentObject(AppState())
 }
-

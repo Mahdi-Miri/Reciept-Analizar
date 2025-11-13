@@ -88,8 +88,8 @@ struct ModernDashboardView: View {
                         Text("RECENT RECEIPTS")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        .font(.caption)
-                        .foregroundColor(.blue)
+                        // Removed the duplicate "View All" link, kept the structure clean
+                        // If you need "View All", add a NavigationLink here.
                     }
                     if appState.receipts.isEmpty {
                         Text("Your scanned receipts will appear here.")
@@ -109,9 +109,12 @@ struct ModernDashboardView: View {
 
                 Spacer(minLength: 30)
             }
-            .padding(16)
+            .padding(16) // This padding is important, keep it.
         }
         .scrollIndicators(.hidden)
+        // *** THIS IS THE KEY CHANGE ***
+        // Makes the ScrollView background transparent
+        .scrollContentBackground(.hidden)
     }
 }
 

@@ -13,35 +13,42 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     
     var body: some View {
-        // Main tab-based layout
-        TabView {
-            // Dashboard tab
-            NavigationStack {
-                ModernDashboardView()
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Dashboard")
-                    // Extend background beyond safe areas
-                    .ignoresSafeArea(.all, edges: .all)
-            }
-            .tabItem {
-                Label("Dashboard", systemImage: "chart.pie.fill")
-            }
+        // 1. Wrap in a ZStack to layer the background
+        ZStack {
+            // 2. Add the animated background as the bottom-most layer
+            // This provides the blue/white theme you requested
+            AnimatedBackgroundView()
             
-            // Scan tab
-            NavigationStack {
-                ModernScanView()
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Scan")
-                    // Extend background beyond safe areas
-                    .ignoresSafeArea(.all, edges: .all)
+            // 3. Your TabView now sits on top of the background
+            TabView {
+                // Dashboard tab
+                NavigationStack {
+                    ModernDashboardView()
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("Dashboard")
+                    // 4. We remove ignoresSafeArea from here
+                }
+                .tabItem {
+                    Label("Dashboard", systemImage: "chart.pie.fill")
+                }
+                
+                // Scan tab
+                NavigationStack {
+                    ModernScanView()
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("Scan")
+                    // 4. We remove ignoresSafeArea from here too
+                }
+                .tabItem {
+                    Label("Scan", systemImage: "camera.viewfinder")
+                }
             }
-            .tabItem {
-                Label("Scan", systemImage: "camera.viewfinder")
-            }
+            // Accent color for selected tab
+            .accentColor(.blue)
+            // 5. We removed the ignoresSafeArea from the TabView itself
         }
-        // Accent color for selected tab
-        .accentColor(.blue)
-        // Makes sure entire view (including status bar & bottom areas) is visible
+        // 6. Apply ONE ignoresSafeArea to the outer ZStack
+        // This ensures the background stretches edge-to-edge
         .ignoresSafeArea(.all, edges: .all)
     }
 }
